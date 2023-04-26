@@ -9,11 +9,13 @@ module Demo where
 
 -- Imports
 import Data
+import Data.List
+
 import Functions
 
 
 demo :: Int -> IO ()
-demo 1 = -- output the names of all the cities
+demo 1 = putStr(intercalate ", " (cityStrings testData) ++ "\n")
 demo 2 = -- output the population of "Berlin" 1 year ago (i.e. last year)
 demo 3 = putStrLn (citiesToString testData)
 demo 4 = -- output the data (as for (iii)) after it has been updated with the
