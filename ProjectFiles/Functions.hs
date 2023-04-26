@@ -13,7 +13,8 @@ import ScreenUtills -- Screen Utilities
 
 -- Task 1
 -- Returns a string of all names of cities.
-
+cityStrings :: [City] -> [String]``
+cityStrings cities = [ name | (name, _, _) <- cities]
 
 
 -- Task 2
