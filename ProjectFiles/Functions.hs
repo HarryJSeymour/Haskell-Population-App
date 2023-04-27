@@ -44,7 +44,7 @@ generateTable cities = generateHeadings cities ++ generateTableContent cities ci
 
 
 generateHeadings :: [City] -> String
-generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 10) ++ "   | " ++ show (yearsList !! 0) ++ "  | " ++ show(yearsList !! 1) ++ "\n"
+generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 8) ++ "   | " ++ show (yearsList !! 0) ++ "    | " ++ show(yearsList !! 1) ++ "\n"
 
 generateTableContent :: [City] -> [City] -> String
 generateTableContent cities [] = ""
@@ -62,10 +62,6 @@ populationsToStringpopulation population = (if currentYear > 9.99 then "" else "
         currentYear = convertPopulation(population !! 0)
         previousYear = convertPopulation(population !! 1)
 
-
-
-
-
 -- Spacing function ...
 spacing :: [City] -> Int -> String
 spacing cities length
@@ -79,7 +75,17 @@ totalLengthHeading cities = maximum (map length (cityStrings cities))
 
 -- Task 4
 -- Updates all cities population figures for a new year, pushing all curretly held data back one. (0 -> 1).
+updatePopulationFigures :: [City] -> Int -> [Int] -> [City]
+updatePopulationFigures cities year populations = [ update year newPop city | (city, newPop) <- lists]
+    where
+        lists = zip cities populations
 
+-- Accepts a year, new population and city and returns a city with the new population added at the years position, and old populations pushed back.
+-- Years list is never updated !!!!
+update :: Int -> Int -> City -> City
+update year newPopulation (a, b, populations) = (a, b, (take y populations ++ newPopulation : drop (y) populations))
+    where
+        y = (yearIndex year 0)
 
 -- Task 5
 -- Adds a new city to the passed list of cities, with a similarly lengthed population list. (Added in an alphabetic order).
@@ -131,3 +137,4 @@ cityCords (_, cords, _) = cords
 -- Accepts a city and returns its populations.
 cityPop :: City -> [Int]
 cityPop (_, _, population) = population
+
