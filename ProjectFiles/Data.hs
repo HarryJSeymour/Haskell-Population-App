@@ -9,9 +9,12 @@ module Data where
 
 type CityName = String
 type CityCoordinates = (Int, Int)
-type CityPopulation = [Float]
+type CityPopulation = [Int]
 
 type City = (CityName, CityCoordinates, CityPopulation)
+
+yearsList :: [Int]
+yearsList = [2023, 2022, 2021, 2020]
 
 -- Test Data Cities.
 testData :: [City]
