@@ -100,6 +100,28 @@ addNewCity cities (name, cords, population) = if length population == 4 then sor
 -- The figures should show all years available. 
 -- The list should include negative numbers if the population is shrinking.
 
+-- ("Amsterdam", (52,  5), [1158, 1149, 1140, 1132])
+
+-- 0
+-- [1132,1140,1149,1158]
+--  0 1132 - 1140
+populationGrowth :: City -> City
+populationGrowth (name, cords, population) = (name, cords, (changeInt(reverse population) 0))
+
+populationGrowthString :: City -> String
+populationGrowthString (name, cords, population) = changeString(reverse population) 0
+
+changeInt :: [Int] -> Int -> [Int]
+changeInt populations n
+    | n == length populations - 1 = []
+    | otherwise = ((populations !! (n+1)) - (populations !! n)) : (changeInt populations (n+1))
+
+changeString :: [Int] -> Int -> String
+changeString populations n
+    | n == length populations - 1 = ""
+    | otherwise = convertPopulationToString(convertPopulation((populations !! (n+1)) - (populations !! n))) ++ (if n+2 == length populations then "" else " -> ") ++ (changeString populations (n+1))
+
+
 
 
 -- Task 7
@@ -138,4 +160,3 @@ cityCords (_, cords, _) = cords
 -- Accepts a city and returns its populations.
 cityPop :: City -> [Int]
 cityPop (_, _, population) = population
-
