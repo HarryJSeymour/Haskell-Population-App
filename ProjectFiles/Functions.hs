@@ -10,7 +10,7 @@ module Functions where
 -- Imports
 import Data -- Types / TestData
 import ScreenUtills -- Screen Utilities
--- import Data.List
+import Data.List
 import Text.Printf
 
 
@@ -89,8 +89,9 @@ update year newPopulation (a, b, populations) = (a, b, (take y populations ++ ne
 
 -- Task 5
 -- Adds a new city to the passed list of cities, with a similarly lengthed population list. (Added in an alphabetic order).
-
-
+-- Sort feature.
+addNewCity :: [City] -> City -> [City]
+addNewCity cities (name, cords, population) = if length population == 4 then sort (cities ++ [(name, cords, population)]) else error "Cities must have 4 currently stored populations"
 
 -- Task 6
 -- Returns a list of yearly population growth figures.
