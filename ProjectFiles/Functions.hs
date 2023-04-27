@@ -11,6 +11,8 @@ module Functions where
 import Data -- Types / TestData
 import ScreenUtills -- Screen Utilities
 -- import Data.List
+import Text.Printf
+
 
 -- Task 1
 -- Returns a string of all names of cities.
@@ -25,7 +27,7 @@ cityStrings cities = [ name | (name, _, _) <- cities]
 -- populationOnYear cities conditionalName conditionalYear
 
 specifiedCityPopulation :: [City] -> String -> Int -> String
-specifiedCityPopulation cities conditionalName year = convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearIndex year 0)
+specifiedCityPopulation cities conditionalName year = convertPopulationToString (convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearIndex year 0))
 -- Simple recursive function to find the index of the year (2023 = 0, 2022 = 1 ...)
 yearIndex :: Int -> Int -> Int
 yearIndex year n
@@ -37,11 +39,46 @@ yearIndex year n
 -- Returns a formatted string containing all the city data which when outputted using putStr will display as a five column table with a header,
 -- containing name, location (N & E), & this years and lasts population (formatted to 3 decimal places with a m suffix).
 
+generateTable :: [City] -> String
+generateTable cities = generateHeadings cities ++ generateTableContent cities cities
+
+
+generateHeadings :: [City] -> String
+generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 10) ++ "   | " ++ show (yearsList !! 0) ++ "  | " ++ show(yearsList !! 1) ++ "\n"
+
+generateTableContent :: [City] -> [City] -> String
+generateTableContent cities [] = ""
+generateTableContent cities (x:xs) = (convertCityToString cities x) ++"\n"++ (generateTableContent cities xs) 
+
+convertCityToString :: [City] -> City -> String
+convertCityToString cities (name, cords, population) = name ++ spacing cities (totalLengthHeading cities - length name) ++" | "++cordsToString cords++" | " ++ populationsToStringpopulation population
+
+cordsToString :: (Int, Int) -> String
+cordsToString (x, y) = show x ++ (if x > 9 then "" else " ") ++" | "++ show y ++ (if y > 9 then "" else " ")
+
+populationsToStringpopulation :: [Int] -> String
+populationsToStringpopulation population = (if currentYear > 9.99 then "" else " ") ++ convertPopulationToString currentYear ++ " | " ++ (if previousYear > 9.99 then "" else " ") ++ convertPopulationToString previousYear
+    where
+        currentYear = convertPopulation(population !! 0)
+        previousYear = convertPopulation(population !! 1)
+
+
+
+
+
+-- Spacing function ...
+spacing :: [City] -> Int -> String
+spacing cities length
+    | length <= 0 = ""
+    | otherwise = " " ++ spacing cities (length-1)
+-- Finds the length of the largest city
+totalLengthHeading :: [City] -> Int
+totalLengthHeading cities = maximum (map length (cityStrings cities))
+
 
 
 -- Task 4
 -- Updates all cities population figures for a new year, pushing all curretly held data back one. (0 -> 1).
-
 
 
 -- Task 5
@@ -72,11 +109,15 @@ yearIndex year n
 
 -- Helper Functions
 -- Converts a population figure to the correct format.
-convertPopulation :: Int -> String
-convertPopulation population = show ((fromIntegral population) / 1000) ++ "m"
+-- 
+convertPopulationToString :: Float -> String
+convertPopulationToString population = (printf "%.3f" population) ++ "m"
+
+convertPopulation :: Int -> Float
+convertPopulation population = ((fromIntegral population) / 1000)
 
 -- Converts a list of population figures to the correct format.
-convertPopulations :: [Int] -> [String]
+convertPopulations :: [Int] -> [Float]
 convertPopulations = map convertPopulation
 
 -- Accepts a city and returns its name.
