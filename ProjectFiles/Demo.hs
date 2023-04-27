@@ -16,7 +16,7 @@ import Functions
 
 demo :: Int -> IO ()
 demo 1 = putStr(intercalate ", " (cityStrings testData) ++ "\n")
-demo 2 = -- output the population of "Berlin" 1 year ago (i.e. last year)
+demo 2 = putStrLn (specifiedCityPopulation testData "Berlin" 2022)
 demo 3 = putStrLn (citiesToString testData)
 demo 4 = -- output the data (as for (iii)) after it has been updated with the
          -- following new population figures (the first is for Amsterdam, etc.)
