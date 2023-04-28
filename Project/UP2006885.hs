@@ -37,6 +37,7 @@ testData = [
 --
 
 -- Task 1 function, responsible for returns a list of city names as a string for all the cities in a list passed.
+-- Task 1 function, responsible for returns a list of city names as a string for all the cities in a list passed.
 cityStrings :: [City] -> [String]
 cityStrings cities = [ name | (name, _, _) <- cities]
 
@@ -134,8 +135,9 @@ changeString populations n
 
 -- Task 7 function, responsible for returning the name of the city closest to a specified location with a population higher than specified.
 findNearestCity :: [City] -> CityCoordinates -> Int -> String
-findNearestCity cities (n, e) population = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
+findNearestCity cities (n, e) population = if nearestCity == [] || (citiesOverPopulation  cities population) == [] then "No Data"  else nearestCity
     where
+        nearestCity = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
         cityList = citiesOverPopulation cities population
 
 
@@ -156,6 +158,13 @@ findIndexOfMinimum n (x:xs) = if minimum (x:xs) == x then n else findIndexOfMini
 -- Accepts a city coordinates and another set of coordinates and returns the distances between them.
 pythagoreanConverter :: (CityName, CityCoordinates) -> CityCoordinates -> Float
 pythagoreanConverter (name, (a,b)) (c, d) = sqrt(fromIntegral(c - a) ^2 + fromIntegral(d -b) ^2)
+
+
+
+-- Task 8
+-- City Map, plots a visual map with the current years population figures.
+-- Terminal = (80 chars horizontal and 50 chars vertical).
+--  + Is used to id a citys location and population (1.333m) next to it.
 
 
 
