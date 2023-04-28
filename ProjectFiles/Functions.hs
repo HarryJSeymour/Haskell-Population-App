@@ -26,14 +26,22 @@ cityStrings cities = [ name | (name, _, _) <- cities]
 -- populationOnYear :: [City] -> String -> Int -> String
 -- populationOnYear cities conditionalName conditionalYear
 
-specifiedCityPopulation :: [City] -> String -> Int -> String
-specifiedCityPopulation cities conditionalName year = convertPopulationToString (convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearIndex year 0))
+-- specifiedCityPopulation :: [City] -> String -> Int -> String
+-- specifiedCityPopulation cities conditionalName year = convertPopulationToString (convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearIndex year 0))
 -- Simple recursive function to find the index of the year (2023 = 0, 2022 = 1 ...)
 yearIndex :: Int -> Int -> Int
 yearIndex year n
     | yearsList !! n == year = n
     | otherwise = yearIndex year (n+1)
 
+
+specifiedCityPopulation :: [City] -> String -> Int -> String
+specifiedCityPopulation cities conditionalName yearsAgo = if (elem conditionalName (cityStrings cities)) && (yearsAgo >= 0 && yearsAgo <populationLength) then convertPopulationToString(convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearsAgo)) else "No Data"
+    where
+        populationLength = length (cityPop (cities !! 0))
+
+    
+    
 
 -- Task 3
 -- Returns a formatted string containing all the city data which when outputted using putStr will display as a five column table with a header,
