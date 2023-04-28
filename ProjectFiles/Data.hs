@@ -7,6 +7,8 @@ module Data where
 -- Types (define your City type here)
 --
 
+
+
 type CityName = String
 type CityCoordinates = (Int, Int)
 type CityPopulation = [Int]
@@ -27,4 +29,3 @@ testData = [
             ("Vienna", (48, 16), [1945, 1930, 1915, 1901]),
             ("Warsaw", (52, 21), [1790, 1783, 1776, 1768])
             ]
-    
