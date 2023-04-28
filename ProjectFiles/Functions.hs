@@ -72,17 +72,6 @@ populationsToStringpopulation population = (if currentYear > 9.99 then "" else "
 
 
 
--- Spacing function ...
-spacing :: [City] -> Int -> String
-spacing cities length
-    | length <= 0 = ""
-    | otherwise = " " ++ spacing cities (length-1)
--- Finds the length of the largest city
-totalLengthHeading :: [City] -> Int
-totalLengthHeading cities = maximum (map length (cityStrings cities))
-
-
-
 -- Task 4
 -- Updates all cities population figures for a new year, pushing all curretly held data back one. (0 -> 1).
 updatePopulationFigures :: [City] -> Int -> [Int] -> [City]
@@ -113,13 +102,8 @@ addNewCity cities (name, cords, population) = if length population == length(cit
 -- Increase in population when compared to last year (0 <- 1), Increase in population for last year and the year before (1 <- 2) 
 -- The figures should show all years available. 
 -- The list should include negative numbers if the population is shrinking.
-populationGrowth :: City -> City
-populationGrowth (name, cords, population) = (name, cords, (changeInt(reverse population) 0))
-
-
-
-populationGrowthString :: City -> String
-populationGrowthString (name, cords, population) = changeString(reverse population) 0
+populationGrowth :: City -> String
+populationGrowth (name, cords, population) = changeString(reverse population) 0
 
 
 
@@ -171,6 +155,19 @@ pythagoreanConverter (name, (a,b)) (c, d) = sqrt(fromIntegral(c - a) ^2 + fromIn
 
 
 -- Helper functions, responsible for providing useful features required by the other functions or UI.
+spacing :: [City] -> Int -> String
+spacing cities length
+    | length <= 0 = ""
+    | otherwise = " " ++ spacing cities (length-1)
+
+
+
+-- Finds the length of the largest city
+totalLengthHeading :: [City] -> Int
+totalLengthHeading cities = maximum (map length (cityStrings cities))
+
+
+
 fullCityString :: City -> String 
 fullCityString city = "Name: " ++cityName city ++ " | "++ cityCordsString city ++ intercalate ", " population
     where
@@ -200,11 +197,6 @@ cityName (name, _, _) = name
 
 cityCordsString :: City -> String
 cityCordsString (_, (n, e), _) = "N: " ++ show n ++ " | E: " ++ show e ++ " | "
-
-
-
-cityNameAndCords :: City -> (CityName, CityCoordinates)
-cityNameAndCords (name, (a, b), _) = (name, (a, b))
 
 
 
