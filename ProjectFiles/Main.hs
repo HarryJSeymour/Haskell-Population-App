@@ -36,7 +36,7 @@ choices cityList = do
     -- 
     putStrLn "  (1) Output all city names"
     putStrLn "  (2) Outputs the population of a specified city by a specified amount of years ago"
-    putStrLn "  (3) "
+    putStrLn "  (3) Returns all city data in a formatted table"
     putStrLn "  (4) "
     putStrLn "  (5) "
     putStrLn "  (6) "
@@ -83,7 +83,6 @@ choice2 cityList = do
     putStrLn("Current Cities: " ++ intercalate ", " (cityStrings cityList) ++ "\n")
     putStr("City Name: ")
     name <- getLine
-
     putStr("Years Ago: ")
     years <- getLine
 
@@ -103,6 +102,8 @@ choice2 cityList = do
 -- Choice 3
 choice3 :: [City] -> IO ()
 choice3 cityList = do
+    putStrLn "City Table \n"
+    putStrLn (generateTable cityList)
     putStrLn "Press any key to continue..."
     wait <- getChar
     clearScreen
