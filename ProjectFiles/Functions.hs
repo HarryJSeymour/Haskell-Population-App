@@ -77,36 +77,29 @@ populationsToStringpopulation population = (if currentYear > 9.99 then "" else "
 
 
 
--- Task 4
--- Updates all cities population figures for a new year, pushing all curretly held data back one. (0 -> 1).
+-- Task 4 function, responsible for updating all city populations by adding new populations by a specified amount of years ago and pushing all data back. (0 = Data is inserted at index 0, etc.)
 updatePopulationFigures :: [City] -> Int -> [Int] -> [City]
 updatePopulationFigures cities year populations = [ update year newPop city | (city, newPop) <- lists]
     where
+        -- Zips the cities and populations together so the respective data is stored together. 
         lists = zip cities populations
 
 
 
--- Accepts a year, new population and city and returns a city with the new population added at the years position, and old populations pushed back.
--- Years list is never updated !!!!
+-- Update function, accepts a year new population and city and returns the city given with the new population at the given index.
 update :: Int -> Int -> City -> City
 update year newPopulation (a, b, populations) = (a, b, (take year populations ++ newPopulation : drop (year) populations))
 
 
 
--- Task 5
--- Adds a new city to the passed list of cities, with a similarly lengthed population list. (Added in an alphabetic order).
--- Sort feature.
+-- Task 5 function, responsible for adding a new city to the passed list, with a similarly lengthed population list, data.lists sort function is used to easily sort the cities in lexical order / alphabetic, and then the cities are returned as a new list.
+-- a simple conditional statement is used to check the new cities population list is reasonably lengthed in comparison to the other cities.
 addNewCity :: [City] -> City -> [City]
 addNewCity cities (name, cords, population) = if length population == length(cityPop(cities !! 0)) then sort (cities ++ [(name, cords, population)]) else error "Cities must have a similar amount of stored populations"
 
 
 
--- Task 6
--- Returns a list of yearly population growth figures.
--- The figure should start at the oldest stored year and then show the how much the next year increased by in thousands.
--- Increase in population when compared to last year (0 <- 1), Increase in population for last year and the year before (1 <- 2) 
--- The figures should show all years available. 
--- The list should include negative numbers if the population is shrinking.
+-- Task 6 function, responsible for...
 populationGrowth :: City -> String
 populationGrowth (name, cords, population) = changeString(reverse population) 0
 
