@@ -44,7 +44,7 @@ generateTable cities = generateHeadings cities ++ generateTableContent cities ci
 
 -- Generate headings function, accepts a list of cities and outputs a formatted heading for the table using the city data to make it dynamically sized.
 generateHeadings :: [City] -> String
-generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 8) ++ "   | 2023    | 2022\n"
+generateHeadings cities = "Name" ++ spacing (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing (totalLengthHeading cities + 8) ++ "   | 2023    | 2022\n"
 
 
 
@@ -58,7 +58,7 @@ generateTableContent cities (x:xs) = (convertCityToString cities x) ++"\n"++ (ge
 
 -- Convert city to string function, accepts a list of cities used for dynamic spacing (the names are checked and used to make sure city headings are given enough space), and accepts a city, the city is then returned as a formatted string.
 convertCityToString :: [City] -> City -> String
-convertCityToString cities (name, cords, population) = name ++ spacing cities (totalLengthHeading cities - length name) ++" | "++cordsToString cords++" | " ++ populationsToStringpopulation population
+convertCityToString cities (name, cords, population) = name ++ spacing (totalLengthHeading cities - length name) ++" | "++cordsToString cords++" | " ++ populationsToStringpopulation population
 
 
 
@@ -148,19 +148,21 @@ pythagoreanConverter (name, (a,b)) (c, d) = sqrt(fromIntegral(c - a) ^2 + fromIn
 
 
 -- Helper functions, responsible for providing useful features required by the other functions or UI.
-spacing :: [City] -> Int -> String
-spacing cities length
+-- Spacing function, accepts a Int and returns that amount of spaces as a String.
+spacing :: Int -> String
+spacing length
     | length <= 0 = ""
-    | otherwise = " " ++ spacing cities (length-1)
+    | otherwise = " " ++ spacing (length-1)
 
 
 
--- Finds the length of the largest city
+-- Total length heading function, accepts a list of cities and returns the length of the longest city name.
 totalLengthHeading :: [City] -> Int
 totalLengthHeading cities = maximum (map length (cityStrings cities))
 
 
 
+-- Full city string function, accepts a city and returns the city as a formatted string.
 fullCityString :: City -> String 
 fullCityString city = "Name: " ++cityName city ++ " | "++ cityCordsString city ++ intercalate ", " population
     where
@@ -168,30 +170,36 @@ fullCityString city = "Name: " ++cityName city ++ " | "++ cityCordsString city +
 
 
 
+-- Convert population to string function, accepts a population which has been passed through Convert population and then returns it as a string formatted to 3 decimal places.
 convertPopulationToString :: Float -> String
 convertPopulationToString population = (printf "%.3f" population) ++ "m"
 
 
 
+-- Convert population function, accepts a population and returns it as float divided by 1000.
 convertPopulation :: Int -> Float
 convertPopulation population = ((fromIntegral population) / 1000)
 
 
 
+-- Convert populations function, accepts a list of populations and maps those functions to the convertPopulation function and returns them as a float.
 convertPopulations :: [Int] -> [Float]
 convertPopulations = map convertPopulation
 
 
 
+-- City name function, accepts a city and returns its name.
 cityName :: City -> String
 cityName (name, _, _) = name
 
 
 
+-- City cords string function, accepts a city and returns its coordinates as a string.
 cityCordsString :: City -> String
 cityCordsString (_, (n, e), _) = "N: " ++ show n ++ " | E: " ++ show e ++ " | "
 
 
 
+-- City pop function, accepts a city and returns a list of all populations.
 cityPop :: City -> [Int]
 cityPop (_, _, population) = population
