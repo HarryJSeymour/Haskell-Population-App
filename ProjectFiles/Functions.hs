@@ -35,35 +35,40 @@ specifiedCityPopulation cities conditionalName yearsAgo = if (elem conditionalNa
 
 
 
--- Task 3
--- Returns a formatted string containing all the city data which when outputted using putStr will display as a five column table with a header,
--- containing name, location (N & E), & this years and lasts population (formatted to 3 decimal places with a m suffix).
+-- Task 3 function, responsible for returning a formatted string containing all city data in a list, which is then displayed as a 5 column table.
 generateTable :: [City] -> String
+-- Table generation is split up into two main functions gen headings and gen table content.
 generateTable cities = generateHeadings cities ++ generateTableContent cities cities
 
 
 
+-- Generate headings function, accepts a list of cities and outputs a formatted heading for the table using the city data to make it dynamically sized.
 generateHeadings :: [City] -> String
 generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 8) ++ "   | 2023    | 2022\n"
 
 
 
+-- Generate table content function, is a recursive function which accepts two lists of cities (should be the same data) and returns the content of the second passed city as a formatted string, the first cities data being used for dynamic spacing.
+-- the city data is passed to convert city to string and added to a larger string until all cities have been formatted.
 generateTableContent :: [City] -> [City] -> String
 generateTableContent cities [] = ""
 generateTableContent cities (x:xs) = (convertCityToString cities x) ++"\n"++ (generateTableContent cities xs) 
 
 
 
+-- Convert city to string function, accepts a list of cities used for dynamic spacing (the names are checked and used to make sure city headings are given enough space), and accepts a city, the city is then returned as a formatted string.
 convertCityToString :: [City] -> City -> String
 convertCityToString cities (name, cords, population) = name ++ spacing cities (totalLengthHeading cities - length name) ++" | "++cordsToString cords++" | " ++ populationsToStringpopulation population
 
 
 
+-- Cords to string function, accepts city coordinates and returns them as a string, conditional statements are used to make sure if the coordinate is 1 digit it is given an extra space to make sure its lined up with any coordinates longer.
 cordsToString :: (Int, Int) -> String
 cordsToString (x, y) = show x ++ (if x > 9 then "" else " ") ++" | "++ show y ++ (if y > 9 then "" else " ")
 
 
 
+-- Population to string function, accepts a list of populations and returns the first and second years population data (Index 0 and 1). Conditional statmenets are used to make sure the data is sized nicely.
 populationsToStringpopulation :: [Int] -> String
 populationsToStringpopulation population = (if currentYear > 9.99 then "" else " ") ++ convertPopulationToString currentYear ++ " | " ++ (if previousYear > 9.99 then "" else " ") ++ convertPopulationToString previousYear
     where
