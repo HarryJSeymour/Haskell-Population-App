@@ -12,24 +12,25 @@ module Functions where
 -- Imports
 import Data -- Types / TestData
 import ScreenUtills -- Screen Utilities
-import Data.List
-import Text.Printf
+import Data.List -- list functions (used for some useful list functions.)
+import Text.Printf -- formatting (used for population format.)
 
 
 
--- Task 1
--- Returns a string of all names of cities.
+-- Task 1 function, responsible for returns a list of city names as a string for all the cities in a list passed.
 cityStrings :: [City] -> [String]
 cityStrings cities = [ name | (name, _, _) <- cities]
 
 
 
--- Task 2
--- Returns the population of a specified city and a specified year (2023 = 0, 2022, = 1, etc), and return "No Data" if the year or city is invalid.
--- Format the returned population to 3 decimal places with the first digit representing 1 million. "1.333m" with the m suffix.
+-- Task 2 function, responsible for returning the population of a specified city a specific amount of years ago.
+-- The population is returned as a string and formatted to 3 decimal places with a suffix of m to represent million (1.133m)
 specifiedCityPopulation :: [City] -> String -> Int -> String
+-- Uses a simple conditional statment to check if the name given by the user is inside the list of cities given, and that the years given is non negative and more than the available populations.
+    -- If this conditional statement is false "No Data" is returned, if its true list comprehension is used to return a list of cities that meet the conditional name given and the first city is indexed and that cities population is then indexed to the specified many years ago and then passed to the convertPopulation function to format it correctly.
 specifiedCityPopulation cities conditionalName yearsAgo = if (elem conditionalName (cityStrings cities)) && (yearsAgo >= 0 && yearsAgo <populationLength) then convertPopulationToString(convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearsAgo)) else "No Data"
     where
+        -- used to check the length of the first cities population length which is used in the conditional statement above.
         populationLength = length (cityPop (cities !! 0))
 
 
