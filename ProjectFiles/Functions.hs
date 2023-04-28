@@ -99,19 +99,13 @@ addNewCity cities (name, cords, population) = if length population == length(cit
 
 
 
--- Task 6 function, responsible for...
+-- Task 6 function, responsible for returning a string of yearly population changes from the passed city.
 populationGrowth :: City -> String
 populationGrowth (name, cords, population) = changeString(reverse population) 0
 
 
 
-changeInt :: [Int] -> Int -> [Int]
-changeInt populations n
-    | n == length populations - 1 = []
-    | otherwise = ((populations !! (n+1)) - (populations !! n)) : (changeInt populations (n+1))
-
-
-
+-- Change string function, accepts a list of populations and int value used for a base case to recursively go through all populations and format them to 3 decimal places with a "m" suffix and add arrows to easily show how the population changes.
 changeString :: [Int] -> Int -> String
 changeString populations n
     | n == length populations - 1 = ""
