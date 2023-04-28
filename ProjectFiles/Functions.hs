@@ -113,20 +113,21 @@ changeString populations n
 
 
 
--- Task 7
--- Returns the name of the city closest to a specified location with a population higher than specified if no city can be found "No city" should be returned.
+-- Task 7 function, responsible for returning the name of the city closest to a specified location with a population higher than specified.
 findNearestCity :: [City] -> CityCoordinates -> Int -> String
 findNearestCity cities (n, e) population = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
     where
-        cityList = citiesOverPopulatin cities population
+        cityList = citiesOverPopulation cities population
 
 
 
-citiesOverPopulatin :: [City] -> Int -> [City]
-citiesOverPopulatin cities population = filter (\(_, _, pop) -> maximum pop > population) cities
+-- Cities over Population function, accepts a list of cities and population figure and returns all cities with a population higher than specified.
+citiesOverPopulation :: [City] -> Int -> [City]
+citiesOverPopulation cities population = filter (\(_, _, pop) -> maximum pop > population) cities
 
 
 
+-- Find index of minimum function, accepts a index used for basic recursion and a list of distances and then finds the index in the list with the shortest distance.
 findIndexOfMinimum :: Int -> [Float] -> Int
 findIndexOfMinimum n [] = 0
 findIndexOfMinimum n (x:xs) = if minimum (x:xs) == x then n else findIndexOfMinimum (n+1) xs
