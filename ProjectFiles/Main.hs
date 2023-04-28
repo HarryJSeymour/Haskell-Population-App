@@ -20,7 +20,6 @@ main = do
     -- MAP files.
     cities <- readFile "cities.txt"
     let cityList = map read $ lines cities :: [City]
-
     clearScreen
     goTo(0,0)
     putStrLn "City Population App "
@@ -37,7 +36,7 @@ choices cityList = do
     putStrLn "  (2) Outputs the population of a specified city by a specified amount of years ago"
     putStrLn "  (3) Returns all city data in a formatted table"
     putStrLn "  (4) "
-    putStrLn "  (5) "
+    putStrLn "  (5) Add a new city to the currently stored cities"
     putStrLn "  (6) Returns a list of yearly population growth figures"
     putStrLn "  (7) Returns the city closest to a specified location with a population higher than specified"
     putStrLn "  (8) "
@@ -92,7 +91,6 @@ choice2 cityList = do
     putStrLn "\nPress any key to continue..."
     wait <- getChar
     clearScreen
-    clearScreen
     goTo(0,0)
     choices cityList
 
@@ -105,7 +103,6 @@ choice3 cityList = do
     putStrLn (generateTable cityList)
     putStrLn "Press any key to continue..."
     wait <- getChar
-    clearScreen
     clearScreen
     goTo(0,0)
     choices cityList
@@ -120,7 +117,6 @@ choice4 cityList = do
     putStrLn "Press any key to continue..."
     wait <- getChar
     clearScreen
-    clearScreen
     goTo(0,0)
     choices cityList
 
@@ -129,14 +125,23 @@ choice4 cityList = do
 -- Choice 5
 choice5 :: [City] -> IO ()
 choice5 cityList = do
--- demo 5 = putStrLn (generateTable (addNewCity testData ("Stockholm", (59, 18), [1657, 1633, 1608, 1583])))
+    putStr"\nNew City Name: "
+    name <- getLine
+    putStr "North: "
+    north <- getLine
+    putStr "East: "
+    east <- getLine
+    population <- getPositions
+
+    let newCityList = (addNewCity cityList (name, (read north :: Int, read east :: Int), population))
+    putStrLn (generateTable newCityList)
+     
+
     putStrLn "Press any key to continue..."
     wait <- getChar
     clearScreen
-    clearScreen
     goTo(0,0)
-    choices cityList
-
+    choices newCityList
 
 
 -- Choice 6
@@ -150,7 +155,6 @@ choice6 cityList = do
     putStrLn (populationGrowthString ([ (name, cords, populations) | (name, cords, populations) <- cityList, name == conditionalName] !! 0))
     putStrLn "\nPress any key to continue..."
     wait <- getChar
-    clearScreen
     clearScreen
     goTo(0,0)
     choices cityList
@@ -177,7 +181,6 @@ choice7 cityList = do
     putStrLn "\nPress any key to continue..."
     wait <- getChar
     clearScreen
-    clearScreen
     goTo(0,0)
     choices cityList
 
@@ -188,7 +191,6 @@ choice8 :: [City] -> IO ()
 choice8 cityList = do
     putStrLn "Press any key to continue..."
     wait <- getChar
-    clearScreen
     clearScreen
     goTo(0,0)
     choices cityList
@@ -204,7 +206,18 @@ choice9 cityList = do
     -- Need to update txt
     clearScreen
 
+getPositions :: IO ([Int])
+getPositions = do
+    putStr "2023: "
+    pop1 <- getLine
+    putStr "2022: "
+    pop2 <- getLine
+    putStr "2021: "
+    pop3 <- getLine
+    putStr "2020: "
+    pop4 <- getLine
 
+    return [read pop1 :: Int, read pop2 :: Int, read pop3 :: Int, read pop4 :: Int]
 
 -- Error MSG
 invalidChoice :: [City] -> IO ()
