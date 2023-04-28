@@ -115,8 +115,9 @@ changeString populations n
 
 -- Task 7 function, responsible for returning the name of the city closest to a specified location with a population higher than specified.
 findNearestCity :: [City] -> CityCoordinates -> Int -> String
-findNearestCity cities (n, e) population = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
+findNearestCity cities (n, e) population = if nearestCity == [] || (citiesOverPopulation  cities population) == [] then "No Data"  else nearestCity
     where
+        nearestCity = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
         cityList = citiesOverPopulation cities population
 
 
