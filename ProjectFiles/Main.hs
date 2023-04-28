@@ -194,9 +194,9 @@ choice6 cityList = do
     putStr("Currently stored cities\n" ++ intercalate ", " (cityStrings cityList) ++ "\n")
     putStr"\nCity Name: "
     conditionalName <- getLine
-    -- Runs the populationGrowthString function which accepts a city and returns a string of its populations growth in comparison to each year another.
+    -- Runs the populationGrowth function which accepts a city and returns a string of its populations growth in comparison to each year another.
     -- List comprehension is used to easily find a city which has the conditional name given by the user, list indexing is then used incase there are multiple entries or cities of the same name.
-    putStrLn (populationGrowthString ([ (name, cords, populations) | (name, cords, populations) <- cityList, name == conditionalName] !! 0))
+    putStrLn (populationGrowth ([ (name, cords, populations) | (name, cords, populations) <- cityList, name == conditionalName] !! 0))
     
     putStrLn "\nPress any key to continue..."
     wait <- getChar
