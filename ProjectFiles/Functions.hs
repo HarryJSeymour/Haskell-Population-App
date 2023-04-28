@@ -126,6 +126,34 @@ changeString populations n
 
 -- Task 7
 -- Returns the name of the city closest to a specified location with a population higher than specified if no city can be found "No city" should be returned.
+    -- testData, ((45N, 8E) with a population above 4.000 (m) people
+
+
+
+findNearestCity :: [City] -> CityCoordinates -> Int -> String
+findNearestCity cities (n, e) population = fullCityString(cityList !! (findIndexOfMinimum 0 [pythagoreanConverter (name, cords) (n, e) | (name, cords, _) <- cityList]))
+    where
+        cityList = citiesOverPopulatin cities population
+
+
+
+
+
+citiesOverPopulatin :: [City] -> Int -> [City]
+citiesOverPopulatin cities population = filter (\(_, _, pop) -> maximum pop > population) cities
+
+
+
+
+
+findIndexOfMinimum :: Int -> [Float] -> Int
+findIndexOfMinimum n [] = 0
+findIndexOfMinimum n (x:xs) = if minimum (x:xs) == x then n else findIndexOfMinimum (n+1) xs
+
+-- Accepts a city coordinates and another set of coordinates and returns the distances between them.
+pythagoreanConverter :: (CityName, CityCoordinates) -> CityCoordinates -> Float
+pythagoreanConverter (name, (a,b)) (c, d) = sqrt(fromIntegral(c - a) ^2 + fromIntegral(d -b) ^2)
+
 
 
 
@@ -137,6 +165,17 @@ changeString populations n
 
 
 -- Helper Functions
+
+fullCityString :: City -> String 
+fullCityString city = "Name: " ++cityName city ++ " | "++ cityCordsString city ++ intercalate ", " population
+    where
+        population = map convertPopulationToString (convertPopulations(cityPop city))
+
+
+
+
+
+-- intercalate ", " (map convertPopulationToString (convertPopulations(cityPop ("Amsterdam", (52,  5), [1158, 1149, 1140, 1132]))))
 -- Converts a population figure to the correct format.
 -- 
 convertPopulationToString :: Float -> String
@@ -154,8 +193,11 @@ cityName :: City -> String
 cityName (name, _, _) = name
 
 -- Accepts a city and returns its cords.
-cityCords :: City -> (Int, Int)
-cityCords (_, cords, _) = cords
+cityCordsString :: City -> String
+cityCordsString (_, (n, e), _) = "N: " ++ show n ++ " | E: " ++ show e ++ " | "
+
+cityNameAndCords :: City -> (CityName, CityCoordinates)
+cityNameAndCords (name, (a, b), _) = (name, (a, b))
 
 -- Accepts a city and returns its populations.
 cityPop :: City -> [Int]
