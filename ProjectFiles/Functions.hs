@@ -23,18 +23,6 @@ cityStrings cities = [ name | (name, _, _) <- cities]
 -- Task 2
 -- Returns the population of a specified city and a specified year (2023 = 0, 2022, = 1, etc), and return "No Data" if the year or city is invalid.
 -- Format the returned population to 3 decimal places with the first digit representing 1 million. "1.333m" with the m suffix.
--- populationOnYear :: [City] -> String -> Int -> String
--- populationOnYear cities conditionalName conditionalYear
-
--- specifiedCityPopulation :: [City] -> String -> Int -> String
--- specifiedCityPopulation cities conditionalName year = convertPopulationToString (convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearIndex year 0))
--- Simple recursive function to find the index of the year (2023 = 0, 2022 = 1 ...)
-yearIndex :: Int -> Int -> Int
-yearIndex year n
-    | yearsList !! n == year = n
-    | otherwise = yearIndex year (n+1)
-
-
 specifiedCityPopulation :: [City] -> String -> Int -> String
 specifiedCityPopulation cities conditionalName yearsAgo = if (elem conditionalName (cityStrings cities)) && (yearsAgo >= 0 && yearsAgo <populationLength) then convertPopulationToString(convertPopulation (([ (populations) | (name, _, populations) <- cities, name == conditionalName] !! 0) !! yearsAgo)) else "No Data"
     where
@@ -52,7 +40,7 @@ generateTable cities = generateHeadings cities ++ generateTableContent cities ci
 
 
 generateHeadings :: [City] -> String
-generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 8) ++ "   | " ++ show (yearsList !! 0) ++ "    | " ++ show(yearsList !! 1) ++ "\n"
+generateHeadings cities = "Name" ++ spacing cities (totalLengthHeading cities - 4) ++ " | N  | E  | " ++ "Population \n" ++ spacing cities (totalLengthHeading cities + 8) ++ "   | 2023    | 2022\n"
 
 generateTableContent :: [City] -> [City] -> String
 generateTableContent cities [] = ""
@@ -91,15 +79,19 @@ updatePopulationFigures cities year populations = [ update year newPop city | (c
 -- Accepts a year, new population and city and returns a city with the new population added at the years position, and old populations pushed back.
 -- Years list is never updated !!!!
 update :: Int -> Int -> City -> City
-update year newPopulation (a, b, populations) = (a, b, (take y populations ++ newPopulation : drop (y) populations))
-    where
-        y = (yearIndex year 0)
+update year newPopulation (a, b, populations) = (a, b, (take year populations ++ newPopulation : drop (year) populations))
+
+
+
+
+
+        
 
 -- Task 5
 -- Adds a new city to the passed list of cities, with a similarly lengthed population list. (Added in an alphabetic order).
 -- Sort feature.
 addNewCity :: [City] -> City -> [City]
-addNewCity cities (name, cords, population) = if length population == 4 then sort (cities ++ [(name, cords, population)]) else error "Cities must have 4 currently stored populations"
+addNewCity cities (name, cords, population) = if length population == length(cityPop(cities !! 0)) then sort (cities ++ [(name, cords, population)]) else error "Cities must have a similar amount of stored populations"
 
 -- Task 6
 -- Returns a list of yearly population growth figures.
