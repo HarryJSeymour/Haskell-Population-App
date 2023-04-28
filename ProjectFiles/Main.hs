@@ -31,11 +31,11 @@ main = do
 choices :: [City] -> IO ()
 choices cityList = do
     putStrLn "Functions: "
-    -- 
+
     putStrLn "  (1) Output all city names"
     putStrLn "  (2) Outputs the population of a specified city by a specified amount of years ago"
     putStrLn "  (3) Returns all city data in a formatted table"
-    putStrLn "  (4) "
+    putStrLn "  (4) Add new population figures at a specified place"
     putStrLn "  (5) Add a new city to the currently stored cities"
     putStrLn "  (6) Returns a list of yearly population growth figures"
     putStrLn "  (7) Returns the city closest to a specified location with a population higher than specified"
@@ -85,7 +85,7 @@ choice2 cityList = do
     years <- getLine
 
     
-    putStrLn (specifiedCityPopulation testData name (read years :: Int))
+    putStrLn (specifiedCityPopulation cityList name (read years :: Int))
 
 
     putStrLn "\nPress any key to continue..."
@@ -112,15 +112,20 @@ choice3 cityList = do
 -- Choice 4
 choice4 :: [City] -> IO ()
 choice4 cityList = do
-        -- demo 4 = putStrLn (generateTable (updatePopulationFigures testData 2023 [1200,3200,3600,1800,9500,6800,11100,4300,2000,1800]))
+    --  0 = 2023 / 1 = 2022
+    putStrLn "Input a year (0 = New Year / 1 = Previous year)"
+    year <- getLine
+    
+    putStrLn ("Enter " ++ show (length cityList) ++ " populations")
+    population <- getPop [] (length cityList)
 
+    let newCityList = (updatePopulationFigures cityList (read year :: Int) population)
+    putStrLn (generateTable newCityList)
     putStrLn "Press any key to continue..."
     wait <- getChar
     clearScreen
     goTo(0,0)
-    choices cityList
-
-
+    choices newCityList
 
 -- Choice 5
 choice5 :: [City] -> IO ()
@@ -131,7 +136,8 @@ choice5 cityList = do
     north <- getLine
     putStr "East: "
     east <- getLine
-    population <- getPositions
+    population <- getPop [] (length(cityPop(cityList !! 0)))
+    
 
     let newCityList = (addNewCity cityList (name, (read north :: Int, read east :: Int), population))
     putStrLn (generateTable newCityList)
@@ -142,6 +148,13 @@ choice5 cityList = do
     clearScreen
     goTo(0,0)
     choices newCityList
+
+getPop :: [Int] -> Int -> IO [Int]
+getPop populations n = do
+    if n == 0 then do return (reverse populations) else do 
+    putStr "Population: "
+    pop <- getLine
+    getPop ((read pop :: Int): populations) (n-1)
 
 
 -- Choice 6
