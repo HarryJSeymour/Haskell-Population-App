@@ -32,6 +32,19 @@ main = do
 choices :: [City] -> IO ()
 choices cityList = do
     putStrLn "Functions: "
+-- Task 6
+-- Returns a list of yearly population growth figures.
+-- The figure should start at the oldest stored year and then show the how much the next year increased by in thousands.
+-- Increase in population when compared to last year (0 <- 1), Increase in population for last year and the year before (1 <- 2) 
+-- The figures should show all years available. 
+-- The list should include negative numbers if the population is shrinking.
+
+-- ("Amsterdam", (52,  5), [1158, 1149, 1140, 1132])
+
+-- Task 7
+-- Returns the name of the city closest to a specified location with a population higher than specified if no city can be found "No city" should be returned.
+    -- testData, ((45N, 8E) with a population above 4.000 (m) people
+
 
     -- 
     putStrLn "  (1) Output all city names"
@@ -40,7 +53,7 @@ choices cityList = do
     putStrLn "  (4) "
     putStrLn "  (5) "
     putStrLn "  (6) "
-    putStrLn "  (7) "
+    putStrLn "  (7) Returns the city closest to a specified location with a population higher than specified"
     putStrLn "  (8) "
     putStrLn "  (9) Quit"
 
@@ -68,8 +81,8 @@ switch cityList userChoice
 -- Choice 1
 choice1 :: [City] -> IO ()
 choice1 cityList = do
-    putStr("List of all city names: " ++ intercalate ", " (cityStrings cityList) ++ "\n")
-    putStrLn "Press any key to continue..."
+    putStr("List of all city names\n" ++ intercalate ", " (cityStrings cityList) ++ "\n")
+    putStrLn "\nPress any key to continue..."
     wait <- getChar
     clearScreen
     goTo(0,0)
@@ -80,7 +93,7 @@ choice1 cityList = do
 -- Choice 2
 choice2 :: [City] -> IO ()
 choice2 cityList = do
-    putStrLn("Current Cities: " ++ intercalate ", " (cityStrings cityList) ++ "\n")
+    putStrLn("Current Cities\n" ++ intercalate ", " (cityStrings cityList) ++ "\n")
     putStr("City Name: ")
     name <- getLine
     putStr("Years Ago: ")
@@ -90,7 +103,7 @@ choice2 cityList = do
     putStrLn (specifiedCityPopulation testData name (read years :: Int))
 
 
-    putStrLn "Press any key to continue..."
+    putStrLn "\nPress any key to continue..."
     wait <- getChar
     clearScreen
     clearScreen
@@ -102,7 +115,7 @@ choice2 cityList = do
 -- Choice 3
 choice3 :: [City] -> IO ()
 choice3 cityList = do
-    putStrLn "City Table \n"
+    putStrLn "City Table\n"
     putStrLn (generateTable cityList)
     putStrLn "Press any key to continue..."
     wait <- getChar
@@ -148,11 +161,29 @@ choice6 cityList = do
     choices cityList
 
 
+-- Task 7
+-- Returns the name of the city closest to a specified location with a population higher than specified if no city can be found "No city" should be returned.
+    -- testData, ((45N, 8E) with a population above 4.000 (m) people
+
 
 -- Choice 7
 choice7 :: [City] -> IO ()
 choice7 cityList = do
-    putStrLn "Press any key to continue..."
+
+    putStr "North: "
+    north <- getLine
+    putStr "East: "
+    east <- getLine
+    putStr "Population (1 = 1000): "
+    population <- getLine
+
+    putStrLn ("\nCity closest to "++ north ++ "N & " ++ east ++ "E with a population above " ++ (convertPopulationToString(convertPopulation(read population :: Int))) ++ ":" )
+
+    putStrLn(findNearestCity cityList (read north :: Int, read east :: Int) (read population :: Int))
+
+
+
+    putStrLn "\nPress any key to continue..."
     wait <- getChar
     clearScreen
     clearScreen
