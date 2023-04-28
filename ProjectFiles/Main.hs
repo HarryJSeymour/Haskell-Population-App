@@ -15,9 +15,9 @@ import Data.List
 import Demo
 import Functions
 import ScreenUtills
- 
 
- 
+
+
 -- Main function, responsible for loading the file containing all city information and then loading a simplistic header and calling the choice menu.
 main :: IO ()
 main = do
