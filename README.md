@@ -10,6 +10,7 @@ The code for this project can be found in ```./Project/UP2006885.hs``` in its en
 
 ## Run
 > ghci UP2006885.hs
+
 > main
 
 ## Image of CLI
